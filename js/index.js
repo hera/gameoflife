@@ -18,12 +18,18 @@ let game = function (canvasId, generationCounterId) {
     // gen counter
     const generationCounter = document.getElementById(generationCounterId);
 
+    // Timer
+    let intervalId;
+    let timerActive = false;
+
     reset();
 
     /*
         Set all cells to false
     */
     function reset () {
+        clearInterval(intervalId);
+        timerActive = false;
         generationCounter.innerHTML = 1
         initGrid(grid);
         initGrid(gridTwo);
@@ -111,6 +117,12 @@ let game = function (canvasId, generationCounterId) {
 
 
     function cellClickHandler (event) {
+        
+        // Can't click while playing
+        if (timerActive) {
+            return false;
+        }
+
         const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left; // x position within the element.
         const y = event.clientY - rect.top;  // y position within the element.
@@ -237,9 +249,21 @@ let game = function (canvasId, generationCounterId) {
         incrementGenerationCounter();
     }
 
+    function play () {
+        intervalId = setInterval(next, 1000);
+        timerActive = true;
+    }
+
+    function stop () {
+        clearInterval(intervalId);
+        timerActive = false;
+    }
+
     return {
         reset,
-        next
+        next,
+        play,
+        stop
     }
 
 } // end
@@ -253,3 +277,9 @@ btnReset.addEventListener("click", myGame.reset);
 
 const btnNext = document.getElementById("btnNext");
 btnNext.addEventListener("click", myGame.next);
+
+const btnPlay = document.getElementById("btnPlay");
+btnPlay.addEventListener("click", myGame.play);
+
+const btnStop = document.getElementById("btnStop");
+btnStop.addEventListener("click", myGame.stop);
