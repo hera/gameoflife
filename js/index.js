@@ -80,7 +80,7 @@ let game = function (canvasId) {
         const y = row * cellSize;
 
         // if alive
-        if (grid[row][col] === true) {
+        if (grid[row][col]) {
 
             // clear cell on canvas
             ctx.clearRect(x, y, cellSize, cellSize);
@@ -98,7 +98,7 @@ let game = function (canvasId) {
         }
     }
 
-    
+
     function cellClickHandler (event) {
         const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left; // x position within the element.
@@ -108,7 +108,6 @@ let game = function (canvasId) {
         let row = Math.floor(y / 25);
         let col = Math.floor(x / 25);
 
-        // if the value is negative, set to 0
         if (row < 0) {
             row = 0;
         }
@@ -120,6 +119,58 @@ let game = function (canvasId) {
         toggleCell(row, col);
     }
 
+    function countNeighbors (row, col) {
+        let counter = 0;
+
+        // to the left
+        if (grid[row][col - 1]) {
+            counter++;
+        }
+
+        // right
+        if (grid[row][col + 1]) {
+            counter++;
+        }
+
+        // top:
+        if (grid[row - 1]) {
+
+            if (grid[row - 1][col]) {
+                counter++;
+            }
+
+            // top left neighbor
+            if (grid[row - 1][col - 1]) {
+                counter++;
+            }
+
+            // top right neighbor
+            if (grid[row - 1][col + 1]) {
+                counter++;
+            }
+        }
+
+        // bottom:
+        if (grid[row + 1]) {
+
+            if (grid[row + 1][col]) {
+                counter++;
+            }
+
+            // bottom left neighbor
+            if (grid[row + 1][col - 1]) {
+                counter++;
+            }
+
+            // bottom right neighbor
+            if (grid[row + 1][col + 1]) {
+                counter++;
+            }
+        }
+
+        return counter;
+    }
+
     return {
         reset
     }
@@ -127,6 +178,7 @@ let game = function (canvasId) {
 } // end
 
 const myGame = game("canvas");
+
 
 
 const btnReset = document.getElementById("btnReset");
