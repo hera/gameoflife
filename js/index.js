@@ -1,58 +1,133 @@
-class Game {
-    constructor (canvasId, cols=25, rows=25, cellSize=25) {
-        this.cols = cols;
-        this.rows = rows;
-        this.cellSize = cellSize;
-        
-        this.canvasElement = document.getElementById(canvasId);
-        this.canvasElement.width = cols * cellSize;
-        this.canvasElement.height = rows * cellSize;
+let game = function (canvasId) {
+    let cols = 25;
+    let rows = 25;
+    let cellSize = 25;
 
-        this.ctx = this.canvasElement.getContext("2d");
+    const grid = [];
+    const gridTwo = [];
 
-        this.clearGrid();
-        this.displayGrid();
+    const canvas = document.getElementById(canvasId);
+    canvas.width = cols * cellSize;
+    canvas.height = rows * cellSize;
+    canvas.addEventListener("click", cellClickHandler);
+
+    const ctx = canvas.getContext("2d");
+
+    reset();
+
+    // Set all cells to false
+    function reset () {
+        initGrid(grid);
+        initGrid(gridTwo);
+        clearCanvas();
+        displayGrid(grid);
     }
+    
+    /*
+        Set grid cells to false. Canvas remains untouched.
+    */
+    function initGrid (gridRef) {
+        // truncate
+        gridRef.length = 0;
 
-    clearGrid () {
-        this.grid = [];
+        for (let r = 0; r < rows; r++) {
+            gridRef[r] = [];
 
-        for (let r = 0; r < this.rows; r++) {
-            this.grid[r] = []
-            for (let c = 0; c < this.cols; c++) {
-                this.grid[r][c] = false;
+            for (let c = 0; c < cols; c++) {
+                gridRef[r][c] = false;
             }
         }
     }
 
-    displayGrid () {
-        // for each row
-        for (let r = 0; r < this.grid.length; r++) {
-            // draw all cells
-            for (let c = 0; c < this.grid[r].length; c++) {
-                // if a cell is alive
-                if (this.grid[r][c] === true) {
 
-                    this.ctx.fillRect(
-                        this.cellSize * c,
-                        this.cellSize * r,
-                        this.cellSize,
-                        this.cellSize
+    function clearCanvas () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+
+    function displayGrid (gridRef) {
+        // for each row
+        for (let r = 0; r < gridRef.length; r++) {
+            // draw all cells
+            for (let c = 0; c < gridRef[r].length; c++) {
+                // if a cell is alive
+                if (grid[r][c] === true) {
+
+                    ctx.fillRect(
+                        cellSize * c,
+                        cellSize * r,
+                        cellSize,
+                        cellSize
                     );
 
                 } else {
                     // otherwise dead
                     
-                    this.ctx.strokeRect(
-                        this.cellSize * c,
-                        this.cellSize * r,
-                        this.cellSize,
-                        this.cellSize
+                    ctx.strokeRect(
+                        cellSize * c,
+                        cellSize * r,
+                        cellSize,
+                        cellSize
                     );
                 }
             }
         }
     }
-}
 
-game = new Game("canvas");
+    function toggleCell (row, col) {
+        // calculate the position of a cell on canvas
+        const x = col * cellSize;
+        const y = row * cellSize;
+
+        // if alive
+        if (grid[row][col] === true) {
+
+            // clear cell on canvas
+            ctx.clearRect(x, y, cellSize, cellSize);
+            
+            // Draw an empty cell in that space
+            ctx.strokeRect(x, y, cellSize, cellSize);
+            
+            // mark as dead
+            grid[row][col] = false;
+        } else {
+            ctx.fillRect(x, y, cellSize, cellSize);
+
+            // mark as alive
+            grid[row][col] = true;
+        }
+    }
+
+    
+    function cellClickHandler (event) {
+        const rect = event.target.getBoundingClientRect();
+        const x = event.clientX - rect.left; // x position within the element.
+        const y = event.clientY - rect.top;  // y position within the element.
+        
+        // find the cell location on grid
+        let row = Math.floor(y / 25);
+        let col = Math.floor(x / 25);
+
+        // if the value is negative, set to 0
+        if (row < 0) {
+            row = 0;
+        }
+
+        if (col < 0) {
+            col = 0;
+        }
+
+        toggleCell(row, col);
+    }
+
+    return {
+        reset
+    }
+
+} // end
+
+const myGame = game("canvas");
+
+
+const btnReset = document.getElementById("btnReset");
+btnReset.addEventListener("click", myGame.reset);
