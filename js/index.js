@@ -1,17 +1,22 @@
-let game = function (canvasId) {
+let game = function (canvasId, generationCounterId) {
+
+    // canvas
     let cols = 25;
     let rows = 25;
     let cellSize = 25;
-
-    let grid = [];
-    let gridTwo = [];
 
     const canvas = document.getElementById(canvasId);
     canvas.width = cols * cellSize;
     canvas.height = rows * cellSize;
     canvas.addEventListener("click", cellClickHandler);
-
     const ctx = canvas.getContext("2d");
+
+    // grid
+    let grid = [];
+    let gridTwo = [];
+
+    // gen counter
+    const generationCounter = document.getElementById(generationCounterId);
 
     reset();
 
@@ -19,6 +24,7 @@ let game = function (canvasId) {
         Set all cells to false
     */
     function reset () {
+        generationCounter.innerHTML = 1
         initGrid(grid);
         initGrid(gridTwo);
         clearCanvas();
@@ -217,11 +223,18 @@ let game = function (canvasId) {
         }
     }
 
+    function incrementGenerationCounter () {
+        counter = Number(generationCounter.innerHTML);
+        counter++;
+        generationCounter.innerHTML = counter;
+    }
+
     function next () {
         generateGridTwo();
         grid = gridTwo;
         clearCanvas();
         displayGrid(grid);
+        incrementGenerationCounter();
     }
 
     return {
@@ -231,7 +244,7 @@ let game = function (canvasId) {
 
 } // end
 
-const myGame = game("canvas");
+const myGame = game("canvas", "gen");
 
 
 
