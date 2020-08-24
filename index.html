@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Conway's "Game of Life"</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3>Generation: 1</h3>
+                <canvas id="canvas"></canvas>
+                <div>
+                    <button class="btn btn-primary">&#9654; Play</button>
+                    <button class="btn btn-warning">&#x23F8; Pause</button>
+                    <button class="btn btn-danger">&#x23F9; Stop</button>
+                    <button class="btn btn-secondary">&#x23ED; Next</button>
+                </div>
+            </div>
+            <div class="col">
+                <h3>Rules:</h3>
+                <ul>
+                    <li>Any live cell with two or three live neighbours survives.</li>
+                    <li>Any dead cell with three live neighbours becomes a live cell.</li>
+                    <li>All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
