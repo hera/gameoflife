@@ -3,8 +3,8 @@ let game = function (canvasId) {
     let rows = 25;
     let cellSize = 25;
 
-    const grid = [];
-    const gridTwo = [];
+    let grid = [];
+    let gridTwo = [];
 
     const canvas = document.getElementById(canvasId);
     canvas.width = cols * cellSize;
@@ -15,7 +15,9 @@ let game = function (canvasId) {
 
     reset();
 
-    // Set all cells to false
+    /*
+        Set all cells to false
+    */
     function reset () {
         initGrid(grid);
         initGrid(gridTwo);
@@ -74,6 +76,9 @@ let game = function (canvasId) {
         }
     }
 
+    /*
+        Flip the value of a cell (true/false) and display the change on canvas
+    */
     function toggleCell (row, col) {
         // calculate the position of a cell on canvas
         const x = col * cellSize;
@@ -171,8 +176,57 @@ let game = function (canvasId) {
         return counter;
     }
 
+    /*
+        Generate gridTwo according to the values of the first grid
+
+        Rules:
+        * If the cell is alive and has 2 or 3 neighbors, then it remains alive. Else it dies.
+        * If the cell is dead and has exactly 3 neighbors, then it comes to life. Else if remains dead.
+    */
+    function generateGridTwo () {
+
+        gridTwo = [];
+
+        // create cells for gridTwo (all false)
+        initGrid(gridTwo);
+
+        // for each row in grid
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                // if cell is alive
+                if (grid[row][col]) {
+                    
+                    const numNeighbors = countNeighbors(row, col);
+
+                    if (numNeighbors === 2 || numNeighbors === 3) {
+                        gridTwo[row][col] = true; // stays alive
+                    } else {
+                        gridTwo[row][col] = false; // dies
+                    }
+
+                } else {
+                    // if the cell is dead
+
+                    // if the cell has exactly 3 neighbors, it comes to life
+                    if (countNeighbors(row, col) === 3) {
+                        gridTwo[row][col] = true;
+                    }
+                }
+
+            }
+        }
+    }
+
+    function next () {
+        generateGridTwo();
+        grid = gridTwo;
+        clearCanvas();
+        displayGrid(grid);
+    }
+
     return {
-        reset
+        reset,
+        next
     }
 
 } // end
@@ -183,3 +237,6 @@ const myGame = game("canvas");
 
 const btnReset = document.getElementById("btnReset");
 btnReset.addEventListener("click", myGame.reset);
+
+const btnNext = document.getElementById("btnNext");
+btnNext.addEventListener("click", myGame.next);
