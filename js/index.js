@@ -266,6 +266,47 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
         timerActive = false;
     }
 
+    function beacon () {
+        reset();
+
+        toggleCell(3, 3);
+        toggleCell(3, 4);
+        toggleCell(4, 3);
+        toggleCell(4, 4);
+        toggleCell(5, 5);
+        toggleCell(5, 6);
+        toggleCell(6, 5);
+        toggleCell(6, 6);
+
+        toggleCell(3, 18);
+        toggleCell(3, 19);
+        toggleCell(4, 18);
+        toggleCell(4, 19);
+        toggleCell(5, 20);
+        toggleCell(5, 21);
+        toggleCell(6, 20);
+        toggleCell(6, 21);
+
+        toggleCell(18, 3);
+        toggleCell(18, 4);
+        toggleCell(19, 3);
+        toggleCell(19, 4);
+        toggleCell(20, 5);
+        toggleCell(20, 6);
+        toggleCell(21, 5);
+        toggleCell(21, 6);
+
+        toggleCell(18, 18);
+        toggleCell(18, 19);
+        toggleCell(19, 18);
+        toggleCell(19, 19);
+        toggleCell(20, 20);
+        toggleCell(20, 21);
+        toggleCell(21, 20);
+        toggleCell(21, 21);
+        
+    }
+
     function pulsar () {
         reset();
 
@@ -337,6 +378,9 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
     function changePreset (id) {
         switch (id) {
             case 1:
+                beacon();
+                break;
+            case 2:
                 pulsar();
                 break;
             default:
@@ -346,7 +390,6 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
     }
 
     function presetHandler (event) {
-        console.log('asdf')
         // Can't set while playing
         if (timerActive) {
             return false;
