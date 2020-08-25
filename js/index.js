@@ -1,4 +1,4 @@
-let game = function (canvasId, generationCounterId) {
+let game = function (canvasId, generationCounterId, timeIntervalId) {
 
     // canvas
     let cols = 25;
@@ -19,6 +19,7 @@ let game = function (canvasId, generationCounterId) {
     const generationCounter = document.getElementById(generationCounterId);
 
     // Timer
+    const intervalSelect = document.getElementById(timeIntervalId);
     let intervalId;
     let timerActive = false;
 
@@ -117,7 +118,7 @@ let game = function (canvasId, generationCounterId) {
 
 
     function cellClickHandler (event) {
-        
+
         // Can't click while playing
         if (timerActive) {
             return false;
@@ -250,7 +251,8 @@ let game = function (canvasId, generationCounterId) {
     }
 
     function play () {
-        intervalId = setInterval(next, 1000);
+        const ms = Number(intervalSelect.options[intervalSelect.selectedIndex].value) * 1000;
+        intervalId = setInterval(next, ms);
         timerActive = true;
     }
 
@@ -268,7 +270,7 @@ let game = function (canvasId, generationCounterId) {
 
 } // end
 
-const myGame = game("canvas", "gen");
+const myGame = game("canvas", "gen", "timeInterval");
 
 
 
