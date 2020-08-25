@@ -1,4 +1,4 @@
-let game = function (canvasId, generationCounterId, timeIntervalId) {
+let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
 
     // canvas
     let cols = 25;
@@ -22,6 +22,11 @@ let game = function (canvasId, generationCounterId, timeIntervalId) {
     const intervalSelect = document.getElementById(timeIntervalId);
     let intervalId;
     let timerActive = false;
+
+    // Presets
+    const preset = document.getElementById(presetId);
+    preset.addEventListener("change", presetHandler);
+
 
     reset();
 
@@ -129,8 +134,8 @@ let game = function (canvasId, generationCounterId, timeIntervalId) {
         const y = event.clientY - rect.top;  // y position within the element.
         
         // find the cell location on grid
-        let row = Math.floor(y / 25);
-        let col = Math.floor(x / 25);
+        let row = Math.floor(y / cellSize);
+        let col = Math.floor(x / cellSize);
 
         if (row < 0) {
             row = 0;
@@ -261,6 +266,97 @@ let game = function (canvasId, generationCounterId, timeIntervalId) {
         timerActive = false;
     }
 
+    function pulsar () {
+        reset();
+
+        toggleCell(6, 8);
+        toggleCell(6, 9);
+        toggleCell(6, 10);
+
+        toggleCell(6, 14);
+        toggleCell(6, 15);
+        toggleCell(6, 16);
+
+        toggleCell(8, 6);
+        toggleCell(8, 11);
+        toggleCell(8, 13);
+        toggleCell(8, 18);
+
+        toggleCell(9, 6);
+        toggleCell(9, 11);
+        toggleCell(9, 13);
+        toggleCell(9, 18);
+
+        toggleCell(10, 6);
+        toggleCell(10, 11);
+        toggleCell(10, 13);
+        toggleCell(10, 18);
+
+        toggleCell(11, 8);
+        toggleCell(11, 9);
+        toggleCell(11, 10);
+
+        toggleCell(11, 14);
+        toggleCell(11, 15);
+        toggleCell(11, 16);
+        
+        // -----
+
+        toggleCell(13, 8);
+        toggleCell(13, 9);
+        toggleCell(13, 10);
+        
+        toggleCell(13, 14);
+        toggleCell(13, 15);
+        toggleCell(13, 16);
+
+        toggleCell(14, 6);
+        toggleCell(14, 11);
+        toggleCell(14, 13);
+        toggleCell(14, 18);
+
+        toggleCell(15, 6);
+        toggleCell(15, 11);
+        toggleCell(15, 13);
+        toggleCell(15, 18);
+
+        toggleCell(16, 6);
+        toggleCell(16, 11);
+        toggleCell(16, 13);
+        toggleCell(16, 18);
+        
+        toggleCell(18, 8);
+        toggleCell(18, 9);
+        toggleCell(18, 10);
+
+        toggleCell(18, 14);
+        toggleCell(18, 15);
+        toggleCell(18, 16);
+    }
+
+    function changePreset (id) {
+        switch (id) {
+            case 1:
+                pulsar();
+                break;
+            default:
+                reset();
+                break;
+        }
+    }
+
+    function presetHandler (event) {
+        console.log('asdf')
+        // Can't set while playing
+        if (timerActive) {
+            return false;
+        }
+
+        id = Number(preset.options[preset.selectedIndex].value);
+        
+        changePreset(id);
+    }
+
     return {
         reset,
         next,
@@ -270,7 +366,7 @@ let game = function (canvasId, generationCounterId, timeIntervalId) {
 
 } // end
 
-const myGame = game("canvas", "gen", "timeInterval");
+const myGame = game("canvas", "gen", "timeInterval", "preset");
 
 
 
