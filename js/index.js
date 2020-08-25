@@ -375,6 +375,19 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
         toggleCell(18, 16);
     }
 
+    function spaceship () {
+        reset();
+        toggleCell(2, 22);
+        toggleCell(2, 19);
+        toggleCell(3, 18);
+        toggleCell(4, 18);
+        toggleCell(5, 18);
+        toggleCell(5, 19);
+        toggleCell(5, 20);
+        toggleCell(5, 21);
+        toggleCell(4, 22);
+    }
+
     function changePreset (id) {
         switch (id) {
             case 1:
@@ -382,6 +395,9 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
                 break;
             case 2:
                 pulsar();
+                break;
+            case 3:
+                spaceship();
                 break;
             default:
                 reset();
