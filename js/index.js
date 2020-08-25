@@ -400,11 +400,26 @@ let game = function (canvasId, generationCounterId, timeIntervalId, presetId) {
         changePreset(id);
     }
 
+    function randomize () {
+        reset();
+
+        for (let r = 0; r < rows; r++) {
+            grid[r] = [];
+
+            for (let c = 0; c < cols; c++) {
+                grid[r][c] = Boolean(Math.round(Math.random()));
+            }
+        }
+
+        displayGrid(grid);
+    }
+
     return {
         reset,
         next,
         play,
-        stop
+        stop,
+        randomize
     }
 
 } // end
@@ -424,3 +439,6 @@ btnPlay.addEventListener("click", myGame.play);
 
 const btnStop = document.getElementById("btnStop");
 btnStop.addEventListener("click", myGame.stop);
+
+const btnRandomize = document.getElementById("btnRandomize");
+btnRandomize.addEventListener("click", myGame.randomize);
